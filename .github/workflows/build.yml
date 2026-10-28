@@ -1,0 +1,39 @@
+name: Build APK
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download project
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
+
+      - name: Extract project
+        run: unzip -q unsee.zip
+        
+      - name: Remove invalid font README
+        run: rm -f unsee/app/src/main/res/font/README.txt
+      - name: Build APK
+        run: gradle -p unsee assembleDebug --no-daemon
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: unsee-debug-apk
+          path: unsee/app/build/outputs/apk/debug/app-debug.apk
