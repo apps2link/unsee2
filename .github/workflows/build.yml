@@ -25,12 +25,12 @@ jobs:
           gradle-version: '8.9'
 
       - name: Extract project
-        run: unzip -q unsee.zip
+        run: unzip -q unsee (2).zip
         
       - name: Remove invalid font README
         run: rm -f unsee/app/src/main/res/font/README.txt
       - name: Build APK
-        run: gradle -p unsee assembleDebug --no-daemon
+        run: gradle -p unsee (2) assembleDebug --no-daemon
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
